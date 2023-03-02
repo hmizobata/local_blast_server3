@@ -7,9 +7,8 @@ FROM ruby:2.7-slim-buster AS builder
 
 # Copy over files required for installing gem dependencies.
 WORKDIR /sequenceserver
-COPY Gemfile Gemfile.lock sequenceserver.gemspec ./
-COPY lib/sequenceserver/version.rb lib/sequenceserver/version.rb
-COPY command.sh command.sh
+COPY wurmlab_sequenceserver/Gemfile wurmlab_sequenceserver/Gemfile.lock wurmlab_sequenceserver/sequenceserver.gemspec ./
+COPY wurmlab_sequenceserver/lib/sequenceserver/version.rb lib/sequenceserver/version.rb
 
 # Install packages required for building gems with C extensions.
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -54,7 +53,7 @@ WORKDIR /sequenceserver
 VOLUME ["/db"]
 EXPOSE 4567
 EXPOSE 3000
-COPY . .
+COPY wurmlab_sequenceserver/ .
 
 # Generate config file with default configs and database directory set to /db.
 # Setting database directory in config file means users can pass command line
@@ -69,6 +68,7 @@ RUN mkdir /local_blast_server
 WORKDIR /local_blast_server
 RUN apt-get update && apt-get -y --no-install-recommends install git
 RUN git clone https://github.com/hmizobata/Local_blast_server2.git
+COPY command.sh Local_blast_server2/
 WORKDIR /db
 RUN mkdir db_nucl db_prot
 COPY sample_H.sapiens_mitochondrial.fasta db_nucl/
@@ -85,17 +85,17 @@ RUN npm install
 # bash in the container.
 WORKDIR /sequenceserver
 ENV PATH=/sequenceserver/bin:${PATH}
-CMD ["bash", "-c", "bash command.sh ${seqserver_url} && tail -f /dev/null"]
+CMD ["bash", "-c", "bash /local_blast_server/Local_blast_server2/command.sh ${seqserver_url} && tail -f /dev/null"]
 
 ## Stage 4 (optional) minify CSS & JS.
 FROM node:15-alpine3.12 AS node
 
 RUN apk add --no-cache git
 WORKDIR /usr/src/app
-COPY ./package.json .
+COPY wurmlab_sequenceserver/package.json .
 RUN npm install
 ENV PATH=${PWD}/node_modules/.bin:${PATH}
-COPY public public
+COPY wurmlab_sequenceserver/public public
 RUN npm run-script build
 
 ## Stage 5 (optional) minify

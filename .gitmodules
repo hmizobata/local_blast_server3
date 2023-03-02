@@ -1,0 +1,3 @@
+[submodule "wurmlab_sequenceserver"]
+	path = wurmlab_sequenceserver
+	url = https://github.com/wurmlab/sequenceserver.git
