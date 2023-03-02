@@ -1,0 +1,13 @@
+*
+!Gemfil*
+!bin
+!config.ru
+!lib
+!package.json
+!public
+!sequenceserver.gemspec
+!views
+!testfasta*
+!command.sh
+!makeconfig.sh
+!sample_H.sapiens_mitochondrial.fasta
