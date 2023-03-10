@@ -71,9 +71,6 @@ RUN git clone https://github.com/hmizobata/Local_blast_server2.git
 COPY command.sh Local_blast_server2/
 WORKDIR /db
 RUN mkdir db_nucl db_prot
-COPY db/sample_H.sapiens_mitochondrial.fasta db_nucl/
-WORKDIR /db/db_nucl
-RUN /blast/bin/makeblastdb -dbtype nucl -in sample_H.sapiens_mitochondrial.fasta -parse_seqids
 WORKDIR /local_blast_server/Local_blast_server2
 COPY makeconfig.sh makeconfig.sh
 RUN apt-get install -y npm
