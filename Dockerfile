@@ -69,8 +69,6 @@ WORKDIR /local_blast_server
 RUN apt-get update && apt-get -y --no-install-recommends install git
 RUN git clone https://github.com/hmizobata/Local_blast_server2.git
 COPY command.sh Local_blast_server2/
-WORKDIR /db
-RUN mkdir db_nucl db_prot
 WORKDIR /local_blast_server/Local_blast_server2
 COPY makeconfig.sh makeconfig.sh
 RUN apt-get install -y npm
