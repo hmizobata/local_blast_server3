@@ -12,4 +12,4 @@
 !wurmlab_sequenceserver/views
 !command.sh
 !makeconfig.sh
-!sample_H.sapiens_mitochondrial.fasta
+!db/*
